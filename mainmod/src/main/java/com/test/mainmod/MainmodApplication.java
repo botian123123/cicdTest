@@ -12,5 +12,4 @@ public class MainmodApplication {
 		ShowInput show = new ShowInput();
 		show.showEnv();
 	}
-
 }

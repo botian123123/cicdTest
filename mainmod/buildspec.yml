@@ -1,0 +1,28 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-version:
+      java: corretto11
+  pre_build:
+    commands:
+      - echo: Logging in to Amz
+      - aws --version
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 186127023843.dkr.ecr.us-east-2.amazonaws.com
+  build:
+    commands:
+      - echo Build started on `date`
+      - mvn package
+      - docker build -t cicdtest .
+      - docker tag cicdtest:latest <account-id>.dkr.ecr.<region-code>.amazonaws.com/cicdtest:latest
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - docker push <account-id>.dkr.ecr.<region-code>.amazonaws.com/cicdtest:latest
+      - echo Writing image definitions file...
+      - printf '{"ImageURI":"<account-id>.dkr.ecr.<region-code>.amazonaws.com/cicdtest:latest"}' > imageDetail.json
+artifacts:
+  files: 
+    - imageDetail.json
+    - taskdef.json
+    - appspec.yaml
