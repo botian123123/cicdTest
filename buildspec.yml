@@ -14,12 +14,12 @@ phases:
       - echo Build started on `date`
       - cd ./mainmod
       - mvn package -Pqa
+      - cd ..
       - docker build -t cicdtest .
       - docker tag cicdtest:latest <account-id>.dkr.ecr.<region-code>.amazonaws.com/cicdtest:latest
   post_build:
     commands:
       - echo Build completed on `date`
-      - cd ..
       - docker push <account-id>.dkr.ecr.<region-code>.amazonaws.com/cicdtest:latest
       - echo Writing image definitions file...
       - printf '{"ImageURI":"<account-id>.dkr.ecr.<region-code>.amazonaws.com/cicdtest:latest"}' > imageDetail.json
