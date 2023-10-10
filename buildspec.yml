@@ -12,6 +12,7 @@ phases:
   build:
     commands:
       - echo Build started on `date`
+      - cd ./mainmod
       - mvn package -Pqa
       - docker build -t cicdtest .
       - docker tag cicdtest:latest <account-id>.dkr.ecr.<region-code>.amazonaws.com/cicdtest:latest
