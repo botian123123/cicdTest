@@ -9,22 +9,23 @@ phases:
       - echo Logging in to Amz
       - aws --version
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 186127023843.dkr.ecr.us-east-2.amazonaws.com
+      - REPOSITORY_URI=186127023843.dkr.ecr.us-east-2.amazonaws.com/cicdtest
   build:
     commands:
       - echo Build started on `date`
       - cd ./mainmod
       - mvn package -Pqa
-      - cd ..
-      - docker build -t cicdtest .
-      - docker tag cicdtest:latest <account-id>.dkr.ecr.<region-code>.amazonaws.com/cicdtest:latest
+      - ls
+      - docker build -t $REPOSITORY_URI:latest .
+      - docker tag $REPOSITORY_URI:latest:latest $REPOSITORY_URI:latest
   post_build:
     commands:
       - echo Build completed on `date`
-      - docker push <account-id>.dkr.ecr.<region-code>.amazonaws.com/cicdtest:latest
+      - docker push $REPOSITORY_URI:latest:latest
       - echo Writing image definitions file...
-      - printf '{"ImageURI":"<account-id>.dkr.ecr.<region-code>.amazonaws.com/cicdtest:latest"}' > imageDetail.json
+      - printf '{"ImageURI":"$REPOSITORY_URI:latest:latest"}' > imageDetail.json
 artifacts:
-  files: 
+  files:
     - imageDetail.json
     - taskdef.json
     - appspec.yaml
