@@ -8,7 +8,7 @@ phases:
     commands:
       - echo Logging in to Amz
       - aws --version
-      - aws ecr get-login-password --region $AWS_DEFAULT_REGION --profile <PROFILE-NAME> | docker login --username AWS --password-stdin 186127023843.dkr.ecr.us-east-2.amazonaws.com
+      - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 186127023843.dkr.ecr.us-east-2.amazonaws.com
       - REPOSITORY_URI=186127023843.dkr.ecr.us-east-2.amazonaws.com/cicdtest
   build:
     commands:
