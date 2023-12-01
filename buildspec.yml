@@ -16,7 +16,7 @@ phases:
       # path of pom file
       - cd ./mainmod
       - mvn package -Pqa
-      # path of dockerfile
+      # path of dockerfile..
       - cd ..
       - docker build -t $REPOSITORY_URI:latest .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:latest
