@@ -2,13 +2,14 @@ version: 0.2
 
 phases:
   install:
-    runtime-version:
+    runtime-versions:
       java: corretto11
   pre_build:
     commands:
       - echo Logging in to Amz
       - aws --version
-      - aws ecr get-login-password --region $AWS_DEFAULT_REGION --profile <PROFILE-NAME> | docker login --username AWS --password-stdin 186127023843.dkr.ecr.us-east-2.amazonaws.com
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION --profile <PROFILE-NAME>
+      - docker login --username AWS --password-stdin 186127023843.dkr.ecr.us-east-2.amazonaws.com
       - REPOSITORY_URI=186127023843.dkr.ecr.us-east-2.amazonaws.com/cicdtest
   build:
     commands:
@@ -16,7 +17,7 @@ phases:
       # path of pom file
       - cd ./mainmod
       - mvn package -Pqa
-      # path of dockerfile..
+      # path of dockerfile
       - cd ..
       - docker build -t $REPOSITORY_URI:latest .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:latest
